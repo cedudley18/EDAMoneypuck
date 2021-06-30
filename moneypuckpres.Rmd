@@ -1,5 +1,10 @@
 ---
 title: "Initial Tasks with Moneypuck Data"
+
+author: 
+  - "Claire Dudley, Devin Basley"
+  - "Ruby Wu, Sara Armstrong" 
+date: 'July 1st, 2021'
 output: 
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -27,8 +32,9 @@ style_mono_accent(base_color = "#808080",
   base_font_size = "24px"
 )
 ```
----
-# Bootstrapping
+
+
+## Bootstrapping
  - Any test or metric that uses sampling with replacement
  - Assigns measures of accuracy to sample estimates
  - Allows estimation of sampling distribution of any statistic using random sampling
@@ -39,7 +45,9 @@ style_mono_accent(base_color = "#808080",
 ```{r include = FALSE, warning = FALSE}
 # for setting up data
 library(tidyverse)
-shots2020 <- read_csv("shots_2020.csv")
+library(data.table)
+shots2020 <- read_csv("../CMSACamp_NHL_Project/data/shots_2020.csv")
+shots0719 <- read.csv("../CMSACamp_NHL_Project/data/shots_2007-2019.csv")
 ```
 
 ```{r}
@@ -133,11 +141,12 @@ shots2020 %>%
 ```
 
 ---
-# Calibration of xG Model for Home and Away Teams
+
+## Calibration of xG Model for Home and Away Teams
 
 --
 ```{r echo = FALSE}
-hometeam %>%
+hometeam_c <- hometeam %>%
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -163,8 +172,8 @@ hometeam %>%
 
 
 
-```{r}
-awayteam %>%
+```{r echo = FALSE,fig.show="hold",fig.height=3.5, fig.width = 3}
+awayteam_c <- awayteam %>%
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -186,15 +195,21 @@ awayteam %>%
     labs(x = "Predicted Probability",
        y = "Actual Probability",
        size = "Number of Attempts")
+
+par(mfrow=c(1,2))
+awayteam_c
+hometeam_c
 ```
 
 ---
 
-## Calibration of xG Model by Situation 
+layout: true
+### Calibration of xG Model by Situation 
+---
 
-# Even Strength
+### Even Strength
 --
-```{r}
+```{r fig.height=3.5, fig.width = 5.5}
 evenstrength %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -219,9 +234,9 @@ evenstrength %>%
 ```
 
 ---
-# Powerplay
 
-```{r}
+
+```{r fig.height=3.5, fig.width = 5.5}
 powerplay %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -242,11 +257,13 @@ powerplay %>%
   theme(legend.position = "bottom") +
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Powerplay")
 ```
 
 ---
-# Penalty Kill
+
+### Penalty Kill
 
 ```{r}
 penaltykill %>%
@@ -273,9 +290,13 @@ penaltykill %>%
 ```
 
 ---
-## Calibration of xG Model by Shot Type
 
-# Wristshot
+
+layout: true
+## Calibration of xG Model by Shot Type
+---
+
+### Wristshot
 
 ```{r}
 wristshot %>%
@@ -472,7 +493,10 @@ deflection %>%
 
 ---
 
+layout: true
 ## Position
+---
+
 ### Forwards
 
 ```{r}
@@ -531,6 +555,8 @@ defense %>%
 
 ---
 
+layout: false
+
 ## Basic xG Model with Logistic Regression
 
 ---
@@ -539,8 +565,83 @@ defense %>%
 
 ---
 
-## xG Coefficient Trends Over Time
+### xG Coefficient Trends Over Time
+
+```{r echo=FALSE}
+
+shots1019 <- shots0719 %>% 
+  filter(season>2009)
+
+recent_season <- rbind(select(shots1019,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound),select(shots2020,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound))
+
+dat_list = split(recent_season, recent_season$season)
+```
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%"}
+init_logit <- map(dat_list, ~glm(goal ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+                                 data = .x,
+                                 family = binomial("logit")) )
+
+distance<- rep(NA,11)
+angle<-rep(NA,11)
+
+for (i in 1:11){
+  distance[i] <- init_logit[[i]]$coefficients[3]
+  angle[i]<- init_logit[[i]]$coefficients[2]
+}
+
+coefficients<- data.frame(season= as.factor(2010:2020) ,distance_c= distance, angle_c = angle)
+
+ggplot(coefficients,aes(x=season,y=distance_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Distance")+
+  theme_bw()
+  
+ggplot(coefficients,aes(x=season,y=angle_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Angle")+
+  theme_bw()
+
+```
+
+
+
+
+
 
 ---
 
-## Rebound Model Coefficient Trends Over Time
+### Rebound Coefficient Trends Over Time
+
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%"}
+
+init_logit <- map(dat_list, ~glm(shotGeneratedRebound ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+                                 data = .x,
+                                 family = binomial("logit")) )
+
+distance<- rep(NA,11)
+angle<-rep(NA,11)
+
+for (i in 1:11){
+  distance[i] <- init_logit[[i]]$coefficients[3]
+  angle[i]<- init_logit[[i]]$coefficients[2]
+}
+
+coefficients<- data.frame(season= as.factor(2010:2020) ,distance_c= distance, angle_c = angle)
+
+ggplot(coefficients,aes(x=season,y=distance_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Distance")+
+  theme_bw()
+  
+ggplot(coefficients,aes(x=season,y=angle_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Angle")+
+  theme_bw()
+```
+
