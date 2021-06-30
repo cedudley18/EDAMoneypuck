@@ -263,4 +263,49 @@ shots2020 %>%
   group_by(shotType) %>%
   summarise(n = n())
 
+# RINK CALIBRATION
+
+shots2020 %>%
+  group_by(homeTeamCode)
+
+rink <- 
+  shots2020 %>%
+  filter(homeTeamCode == "DAL")
+  
+rink %>%
+  mutate(
+    bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 2)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts")
+
+
+# Notes
+# ANA - weird, not a ton of data though
+# ARI - line is smooth but outliers
+# BOS - line above line, actual > predicted
+# BUF - weird, parabola - y
+# CAR- not bad
+# CBJ - increases be decent amount
+# CGY - a little bizarre
+# CHI - actual over predicted
+# COL - not bad
+# DAL - not bad
+
 
