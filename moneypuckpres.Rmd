@@ -185,7 +185,7 @@ awayteam %>%
 
 ## Calibration of xG Model by Situation 
 
-# Even Strength
+### Even Strength
 --
 ```{r}
 evenstrength %>%
@@ -212,7 +212,7 @@ evenstrength %>%
 ```
 
 ---
-# Powerplay
+### Powerplay
 
 ```{r}
 powerplay %>%
@@ -239,7 +239,7 @@ powerplay %>%
 ```
 
 ---
-# Penalty Kill
+### Penalty Kill
 
 ```{r}
 penaltykill %>%
