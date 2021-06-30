@@ -237,6 +237,7 @@ powerplay %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
 ---
 # Penalty Kill
 
@@ -263,6 +264,7 @@ penaltykill %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
 ---
 ## Calibration of xG Model by Shot Type
 
@@ -293,6 +295,10 @@ wristshot %>%
        size = "Number of Attempts")
 ```
 
+
+---
+
+
 ```{r}
 slapshot %>%
   mutate(
@@ -317,6 +323,9 @@ slapshot %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
+
+---
 
 ```{r}
 backhand %>%
@@ -343,6 +352,9 @@ backhand %>%
        size = "Number of Attempts")
 ```
 
+
+---
+
 ```{r}
 snapshot %>%
   mutate(
@@ -367,6 +379,8 @@ snapshot %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
+---
 
 ```{r}
 tip %>%
@@ -393,6 +407,8 @@ tip %>%
        size = "Number of Attempts")
 ```
 
+---
+
 ```{r}
 wrap %>%
   mutate(
@@ -418,6 +434,9 @@ wrap %>%
        size = "Number of Attempts")
 ```
 
+
+---
+
 ```{r}
 deflection %>%
   mutate(
@@ -442,10 +461,12 @@ deflection %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
+
 ---
 
 ## Position
-
+### Forwards
 
 ```{r}
 forward %>%
@@ -471,6 +492,9 @@ forward %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 ```
+
+
+
 ---
 
 ## Basic xG Model with Logistic Regression
