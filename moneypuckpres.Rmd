@@ -27,6 +27,13 @@ style_mono_accent(base_color = "#808080",
   base_font_size = "24px"
 )
 ```
+---
+# Bootstrapping
+ - Any test or metric that uses sampling with replacement
+ - Assigns measures of accuracy to sample estimates
+ - Allows estimation of sampling distribution of any statistic using random sampling
+ 
+---
 
 
 ```{r include = FALSE, warning = FALSE}
