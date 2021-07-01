@@ -46,8 +46,9 @@ style_mono_accent(base_color = "#808080",
 # for setting up data
 library(tidyverse)
 library(data.table)
-shots2020 <- read_csv("../CMSACamp_NHL_Project/data/shots_2020.csv")
-shots0719 <- read.csv("../CMSACamp_NHL_Project/data/shots_2007-2019.csv")
+shots <- read_csv("shots_data/shots_2020.csv")
+shots2020 <- read_csv("shots_data/shots_2020.csv")
+shots0719 <- read.csv("shots_data/shots_2007-2019.csv")
 ```
 
 ```{r}
@@ -90,6 +91,9 @@ forward <- shots2020 %>%
   filter(Position == "F")
 defense <- shots2020 %>%
   filter(Position == "D")
+
+lefthand <- subset(shots, shooterLeftRight == "L")
+righthand <- subset(shots, shooterLeftRight == "R")
 
 
 ```
@@ -136,15 +140,9 @@ shots2020 %>%
 
 ## Calibration of xG Model for Home and Away Teams
 
-<<<<<<< HEAD
---
-```{r echo = FALSE}
-hometeam_c <- hometeam %>%
-=======
-### Home
-```{r echo = FALSE, figures-side, fig.show="hold", out.width = "50%"}
+### Home vs. Away
+```{r echo = FALSE, fig.show="hold", out.width = "50%"}
 hometeam %>%
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -167,12 +165,7 @@ hometeam %>%
        y = "Actual Probability",
        size = "Number of Attempts")
 
-<<<<<<< HEAD
-```{r echo = FALSE,fig.show="hold",fig.height=3.5, fig.width = 3}
-awayteam_c <- awayteam %>%
-=======
 awayteam %>%
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -194,20 +187,12 @@ awayteam %>%
     labs(x = "Predicted Probability",
        y = "Actual Probability",
        size = "Number of Attempts")
-
-par(mfrow=c(1,2))
-awayteam_c
-hometeam_c
 ```
 
 ---
-
-layout: true
-### Calibration of xG Model by Situation 
----
-
+## Calibration of xG Model by Situation 
 ### Even Strength
---
+
 ```{r fig.height=3.5, fig.width = 5.5}
 evenstrength %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -233,15 +218,10 @@ evenstrength %>%
 ```
 
 ---
-<<<<<<< HEAD
 
-
-```{r fig.height=3.5, fig.width = 5.5}
-=======
 ### Powerplay and Penalty Kill
 
-```{r, figures-side, fig.show="hold", out.width = "50%"}
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
+```{r, fig.show="hold", out.width = "50%"}
 powerplay %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -262,17 +242,8 @@ powerplay %>%
   theme(legend.position = "bottom") +
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-<<<<<<< HEAD
        size = "Number of Attempts",
        title="Powerplay")
-```
-
----
-
-### Penalty Kill
-=======
-       size = "Number of Attempts")
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
 
 penaltykill %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -299,18 +270,10 @@ penaltykill %>%
 
 ---
 
-
-layout: true
 ## Calibration of xG Model by Shot Type
----
+### Wristshot and Slapshot
 
-<<<<<<< HEAD
-### Wristshot
-=======
-# Wristshot and Slapshot
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
-
-```{r, figures-side, fig.show="hold", out.width = "50%"}
+```{r, fig.show="hold", out.width = "50%"}
 wristshot %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -359,9 +322,10 @@ slapshot %>%
 ```
 
 ---
+
 ### Backhand and Snapshot
 
-```{r, figures-side, fig.show="hold", out.width = "50%"}
+```{r, fig.show="hold", out.width = "50%"}
 backhand %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -410,8 +374,10 @@ snapshot %>%
 ```
 
 ---
+
+
 ### Tip and Wraparound
-```{r, figures-side, fig.show="hold", out.width = "50%"}
+```{r, fig.show="hold", out.width = "50%"}
 tip %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -460,6 +426,7 @@ wrap %>%
 ```
 
 ---
+
 ### Deflection
 
 ```{r}
@@ -489,17 +456,10 @@ deflection %>%
 
 ---
 
-layout: true
-## Position
-<<<<<<< HEAD
----
-
-### Forwards
-=======
+# Position
 ### Forwards vs Defense
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
 
-```{r, figures-side, fig.show="hold", out.width = "50%"}
+```{r, fig.show="hold", out.width = "50%"}
 forward %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -548,7 +508,60 @@ defense %>%
 ```
 
 ---
-# Handedness
+## Handedness
+### Left vs. Righthand
+
+```{r,  fig.show="hold", out.width = "50%"}
+lefthand %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 2)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts")
+
+righthand %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 2)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts")
+```
+
+---
+
+# Are Any Rinks Poorly Calibrated? 
 
 ---
 
@@ -609,8 +622,6 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
 
 
 ---
-
-<<<<<<< HEAD
 ### Rebound Coefficient Trends Over Time
 
 
@@ -642,7 +653,5 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
   labs(title = "Angle")+
   theme_bw()
 ```
-=======
-## Rebound Model Coefficient Trends Over Time
->>>>>>> 4ecb2d349550fd5618f68a83eb2f4cf62cad2d02
+
 
