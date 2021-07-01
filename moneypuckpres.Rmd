@@ -1,5 +1,10 @@
 ---
 title: "Initial Tasks with Moneypuck Data"
+
+author: 
+  - "Claire Dudley, Devin Basley"
+  - "Ruby Wu, Sara Armstrong" 
+date: 'July 1st, 2021'
 output: 
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -8,8 +13,7 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(
-  
-    fig.width = 9, fig.height = 3.5, fig.retina = 3,
+    fig.retina = 3,
     out.width = "100%",
     cache = FALSE,
     echo = FALSE,
@@ -27,8 +31,9 @@ style_mono_accent(base_color = "#808080",
   base_font_size = "24px"
 )
 ```
----
-# Bootstrapping
+
+
+## Bootstrapping
  - Any test or metric that uses sampling with replacement
  - Assigns measures of accuracy to sample estimates
  - Allows estimation of sampling distribution of any statistic using random sampling
@@ -39,7 +44,10 @@ style_mono_accent(base_color = "#808080",
 ```{r include = FALSE, warning = FALSE}
 # for setting up data
 library(tidyverse)
-shots2020 <- read_csv("shots_2020.csv")
+library(data.table)
+shots <- read_csv("shots_data/shots_2020.csv")
+shots2020 <- read_csv("shots_data/shots_2020.csv")
+shots0719 <- read.csv("shots_data/shots_2007-2019.csv")
 ```
 
 ```{r}
@@ -83,23 +91,18 @@ forward <- shots2020 %>%
 defense <- shots2020 %>%
   filter(Position == "D")
 
+lefthand <- subset(shots, shooterLeftRight == "L")
+righthand <- subset(shots, shooterLeftRight == "R")
+
 
 ```
 
 class: left, top
 ## NHL Shots Data
-* <p> Exclusively 2021 season data </p>
-* <p> Excludes strikes and balls </p>
-* <p> Examining a subset of the game of baseball </p>
-* <p> Exploring different conditions influence outcomes </p>
-
-???
-* The title of our data set is batted balls and it is focused on only the plays
-in baseball that are hit. Aka we are not looking at balls and strikes  
-* The natural direction of our exploration is how the play develops based around 
-different game conditions and this acts as the umbrella of our exploration    
-* Notably this subset of the game precludes any analysis on batting or pitching 
-efficiency and rather directs us to examine post hit features of the game
+* <p> Each row represents a shot puck in the NHL
+* <p> Calibration plots only include shots and the xG model from 2020-21 season
+* <p> Made basic logistic regression models with rebound and goals as response variables, distance and angle as explanatory
+* <p> Looked at seasons from 2009-2019 to see if the coefficients for these logistic regression models change over time
 
 ---
 
@@ -107,7 +110,7 @@ efficiency and rather directs us to examine post hit features of the game
 
 --
 
-```{r echo = FALSE}
+```{r echo = FALSE, out.width = "60%", fig.align="center"}
 shots2020 %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -133,10 +136,17 @@ shots2020 %>%
 ```
 
 ---
-# Calibration of xG Model for Home and Away Teams
 
---
-```{r echo = FALSE}
+class: center, middle
+
+# Calibration on subsets
+
+---
+
+## Team
+
+### Home vs. Away
+```{r echo = FALSE, fig.show="hold", out.width = "50%"}
 hometeam %>%
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -158,12 +168,12 @@ hometeam %>%
   theme(legend.position = "bottom") +
     labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       title="Home Team",
+       size = "Number of Attempts",
+      plot.title = element_text(size = 20,face = "bold"),
+      axis.title.x = element_text(size=16),
+      axis.title.y = element_text(size=16))
 
-
-
-```{r}
 awayteam %>%
   mutate(
     bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -185,16 +195,21 @@ awayteam %>%
   theme(legend.position = "bottom") +
     labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Away Team")
 ```
 
 ---
 
-## Calibration of xG Model by Situation 
+layout: true
 
-# Even Strength
---
-```{r}
+## Situation 
+
+---
+
+### Even Strength
+
+```{r out.width = "50%", fig.align="center"}
 evenstrength %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -215,13 +230,15 @@ evenstrength %>%
   theme(legend.position = "bottom") +
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Even Strength")
 ```
 
 ---
-# Powerplay
 
-```{r}
+### Powerplay and Penalty Kill
+
+```{r, fig.show="hold", out.width = "50%"}
 powerplay %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -242,13 +259,9 @@ powerplay %>%
   theme(legend.position = "bottom") +
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+       title="Powerplay")
 
----
-# Penalty Kill
-
-```{r}
 penaltykill %>%
   mutate(bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
   group_by(bin_pred_prob) %>%
@@ -269,15 +282,21 @@ penaltykill %>%
   theme(legend.position = "bottom") +
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Penalty Kill")
 ```
 
 ---
-## Calibration of xG Model by Shot Type
 
-# Wristshot
+layout: true
 
-```{r}
+##Shot Type
+
+---
+
+### Wristshot and Slapshot
+
+```{r, fig.show="hold", out.width = "50%"}
 wristshot %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -299,14 +318,9 @@ wristshot %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+       title="Wristshot")
 
-
----
-
-
-```{r}
 slapshot %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -328,13 +342,15 @@ slapshot %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Slapshot")
 ```
-
 
 ---
 
-```{r}
+### Backhand and Snapshot
+
+```{r, fig.show="hold", out.width = "50%"}
 backhand %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -356,13 +372,9 @@ backhand %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+       title="Backhand")
 
-
----
-
-```{r}
 snapshot %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -384,12 +396,15 @@ snapshot %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Snapshot")
 ```
 
 ---
 
-```{r}
+
+### Tip and Wraparound
+```{r, fig.show="hold", out.width = "50%"}
 tip %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -411,12 +426,9 @@ tip %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+       title="Tip")
 
----
-
-```{r}
 wrap %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -438,13 +450,16 @@ wrap %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Wraparound")
 ```
-
 
 ---
 
-```{r}
+### Deflection
+
+```{r out.width = "50%", fig.align="center" }
+
 deflection %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -466,16 +481,23 @@ deflection %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+      plot.title = element_text(size = 20,face = "bold"),
+      axis.title.x = element_text(size=16),
+      axis.title.y = element_text(size=16),
+      title="Deflection")
 
+```
 
 ---
 
-## Position
-### Forwards
+layout: false
 
-```{r}
+## Position
+
+### Forwards vs Defense
+
+```{r, fig.show="hold", out.width = "50%"}
 forward %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -497,13 +519,9 @@ forward %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
-```
+       size = "Number of Attempts",
+       title="Forwards")
 
----
-
-### Defense
-```{r}
 defense %>%
   mutate(
          bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
@@ -525,22 +543,178 @@ defense %>%
   theme(legend.position = "bottom") + 
   labs(x = "Predicted Probability",
        y = "Actual Probability",
-       size = "Number of Attempts")
+       size = "Number of Attempts",
+       title="Defense")
+```
+
+---
+
+## Handedness
+
+### Left vs. Righthand
+
+```{r,  fig.show="hold", out.width = "50%"}
+lefthand %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 2)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="Lefthand")
+
+righthand %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 2)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="Righthand")
+```
+
+---
+
+## Are Any Rinks Poorly Calibrated? 
+
+---
+
+### Basic xG Model with Logistic Regression  
+###### &nbsp; 
+
+![](moneypuckpres_files/goal.png)
+
+---
+
+### Rebound Probability Model with Logistic Regression
+
+![](moneypuckpres_files/rebound.png)
+
+---
+
+### xG Coefficient Trends Over Time
+
+```{r echo=FALSE}
+
+shots1019 <- shots0719 %>% 
+  filter(season>2009)
+
+recent_season <- rbind(select(shots1019,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound),select(shots2020,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound))
+
+dat_list = split(recent_season, recent_season$season)
+```
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
+init_logit <- map(dat_list, ~glm(goal ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+                                 data = .x,
+                                 family = binomial("logit")) )
+
+distance<- rep(NA,11)
+angle<-rep(NA,11)
+
+for (i in 1:11){
+  distance[i] <- init_logit[[i]]$coefficients[3]
+  angle[i]<- init_logit[[i]]$coefficients[2]
+}
+
+coefficients<- data.frame(season= as.factor(2010:2020) ,distance_c= distance, angle_c = angle)
+
+ggplot(coefficients,aes(x=season,y=distance_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Distance",
+       x = "Season",
+       y = "Shot Distance Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20,face = "bold"))
+  
+ggplot(coefficients,aes(x=season,y=angle_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Angle",
+       x = "Season",
+       y = "Shot Angle Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20, face = "bold"))
+
+```
+
+---
+
+### Rebound Coefficient Trends Over Time
+
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
+
+init_logit <- map(dat_list, ~glm(shotGeneratedRebound ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+                                 data = .x,
+                                 family = binomial("logit")) )
+
+distance<- rep(NA,11)
+angle<-rep(NA,11)
+
+for (i in 1:11){
+  distance[i] <- init_logit[[i]]$coefficients[3]
+  angle[i]<- init_logit[[i]]$coefficients[2]
+}
+
+coefficients<- data.frame(season= as.factor(2010:2020) ,distance_c= distance, angle_c = angle)
+
+ggplot(coefficients,aes(x=season,y=distance_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Distance",
+       x = "Season",
+       y = "Shot Distance Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20,face = "bold"))
+  
+ggplot(coefficients,aes(x=season,y=angle_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "Angle",
+       x = "Season",
+       y = "Shot Angle Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20,face = "bold"))
 ```
 
 
----
-
-## Basic xG Model with Logistic Regression
-
----
-
-## Rebound Probability Model with Logistic Regression
-
----
-
-## xG Coefficient Trends Over Time
-
----
-
-## Rebound Model Coefficient Trends Over Time
