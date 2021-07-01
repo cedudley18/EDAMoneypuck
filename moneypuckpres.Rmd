@@ -94,7 +94,28 @@ defense <- shots2020 %>%
 lefthand <- subset(shots, shooterLeftRight == "L")
 righthand <- subset(shots, shooterLeftRight == "R")
 
+SJ <- 
+  shots2020 %>%
+  filter(homeTeamCode == "S.J")
+CHI <- 
+  shots %>%
+  filter(homeTeamCode == "CHI")
+ANA <-
+  shots %>%
+  filter(homeTeamCode == "ANA")
+DET <-
+  shots %>%
+  filter(homeTeamCode == "DET")
+VGK <-
+  shots %>%
+  filter(homeTeamCode == "VGK")
 
+BOS <-
+  shots %>%
+  filter(homeTeamCode == "BOS")
+PIT <-
+  shots %>%
+  filter(homeTeamCode == "PIT")
 ```
 
 class: left, top
@@ -121,7 +142,7 @@ shots2020 %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -157,7 +178,7 @@ hometeam %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2) +
+            size = 4) +
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -184,7 +205,7 @@ awayteam %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2) +
+            size = 4) +
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -219,7 +240,7 @@ evenstrength %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.1, y = -0.01),
-            size = 2) +
+            size = 4) +
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -248,7 +269,7 @@ powerplay %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2) +
+            size = 4) +
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -271,7 +292,7 @@ penaltykill %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.07, y = -0.02),
-            size = 2) +
+            size = 4) +
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -307,7 +328,7 @@ wristshot %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -331,7 +352,7 @@ slapshot %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -361,7 +382,7 @@ backhand %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -385,7 +406,7 @@ snapshot %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -415,7 +436,7 @@ tip %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -439,7 +460,7 @@ wrap %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -470,7 +491,7 @@ deflection %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -508,7 +529,7 @@ forward %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -532,7 +553,7 @@ defense %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -564,7 +585,7 @@ lefthand %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -588,7 +609,7 @@ righthand %>%
   geom_point(aes(size = n_attempts)) + 
   geom_text(aes(label = n_attempts),
             position = position_nudge(x = 0.05, y = -0.05),
-            size = 2)+
+            size = 4)+
   geom_smooth(method = "loess", se = FALSE) + 
   geom_abline(intercept = 0, slope = 1, color = "darkred",
               linetype = "dashed") + 
@@ -606,6 +627,160 @@ righthand %>%
 ---
 
 ## Are Any Rinks Poorly Calibrated? 
+--
+
+```{r,  fig.show="hold", out.width = "50%"}
+SJ %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="Solar4America (San Jose)")
+
+CHI %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="United Center (Chicago)")
+```
+---
+
+```{r,  fig.show="hold", out.width = "50%"}
+VGK %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="T-Mobile Arena (Vegas)")
+
+DET %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="Little Caesar's Arena (Detroit)")
+```
+
+---
+
+```{r,  fig.show="hold", out.width = "50%"}
+BOS %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="T.D. Garden")
+
+PIT %>%
+  mutate(
+         bin_pred_prob = round(xGoal / 0.05) * 0.05) %>%
+  group_by(bin_pred_prob) %>%
+  summarize(n_attempts = n(),
+            bin_actual_prob = mean(goal)) %>%
+  ggplot(aes(x = bin_pred_prob, y = bin_actual_prob)) + 
+  geom_point(aes(size = n_attempts)) + 
+  geom_text(aes(label = n_attempts),
+            position = position_nudge(x = 0.05, y = -0.05),
+            size = 4)+
+  geom_smooth(method = "loess", se = FALSE) + 
+  geom_abline(intercept = 0, slope = 1, color = "darkred",
+              linetype = "dashed") + 
+  theme_bw() + 
+  coord_equal() + 
+  scale_x_continuous(limits = c(0,1)) +
+  scale_y_continuous(limits = c(0, 1)) + 
+  theme(legend.position = "bottom") + 
+  labs(x = "Predicted Probability",
+       y = "Actual Probability",
+       size = "Number of Attempts",
+       title="PPG Paints Arena (Pittsburgh)")
+```
 
 ---
 
