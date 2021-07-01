@@ -491,7 +491,7 @@ defense %>%
 ```
 
 ---
-# Handedness 
+# Handedness
 
 ---
 
