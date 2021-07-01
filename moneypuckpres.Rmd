@@ -100,10 +100,10 @@ righthand <- subset(shots, shooterLeftRight == "R")
 
 class: left, top
 ## NHL Shots Data
-* <p> 
-* <p> 
-* <p> 
-* <p> 
+* <p> Each row represents a shot puck in the NHL
+* <p> Calibration plots only include shots and the xG model from 2020-21 season
+* <p> Made basic logistic regression models with rebound and goals as response variables, distance and angle as explanatory
+* <p> Looked at seasons from 2009-2019 to see if the coefficients for these logistic regression models change over time
 
 ---
 
