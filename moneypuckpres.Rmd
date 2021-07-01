@@ -569,9 +569,13 @@ layout: false
 
 ## Basic xG Model with Logistic Regression
 
+![](moneypuckpres_files/goal.png)
+
 ---
 
 ## Rebound Probability Model with Logistic Regression
+
+![](moneypuckpres_files/rebound.png)
 
 ---
 
