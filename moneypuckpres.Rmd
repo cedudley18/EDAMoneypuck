@@ -490,6 +490,8 @@ defense %>%
        size = "Number of Attempts")
 ```
 
+---
+# Lefthand vs. Righthand
 
 ---
 
