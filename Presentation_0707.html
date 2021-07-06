@@ -30,10 +30,32 @@ class: center, middle, inverse, title-slide
 
 ---
 
+### How much does that increase matter
 
-## How much does that increase matter
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-1-2.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
+---
+
+
+
+### How much does that increase matter
+
+
+
+Plug the mean distance and angle to 2010 xG model
+
+
+```
+## [1] 0.04788297
+```
+
+Plug the mean distance and angle to 2018 xG model
+
+
+```
+## [1] 0.05340963
+```
 
 
 ---
@@ -41,21 +63,6 @@ class: center, middle, inverse, title-slide
 ### shotGoalieFroze Model with Logistic Regression
 
 
-```
-## 
-## Call:  glm(formula = shotGoalieFroze ~ shotAngleAdjusted + arenaAdjustedShotDistance, 
-##     family = binomial("logit"), data = recent_season)
-## 
-## Coefficients:
-##               (Intercept)          shotAngleAdjusted  
-##                 -1.984525                   0.002337  
-## arenaAdjustedShotDistance  
-##                  0.008065  
-## 
-## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
-## Null Deviance:	    1030000 
-## Residual Deviance: 1026000 	AIC: 1026000
-```
 
 
 ---
@@ -63,28 +70,13 @@ class: center, middle, inverse, title-slide
 
 ### shotGoalieFroze Coefficient Trends Over Time
 
-&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-3-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-6-2.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ### shotPlayContinuedInZone Model with Logistic Regression
 
 
-```
-## 
-## Call:  glm(formula = shotPlayContinuedInZone ~ shotAngleAdjusted + arenaAdjustedShotDistance, 
-##     family = binomial("logit"), data = recent_season)
-## 
-## Coefficients:
-##               (Intercept)          shotAngleAdjusted  
-##                -0.8307658                  0.0013269  
-## arenaAdjustedShotDistance  
-##                 0.0007848  
-## 
-## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
-## Null Deviance:	    1434000 
-## Residual Deviance: 1434000 	AIC: 1434000
-```
 
 
 ---
@@ -92,28 +84,13 @@ class: center, middle, inverse, title-slide
 
 ### shotPlayContinuedInZone Coefficient Trends Over Time
 
-&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-5-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-8-2.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ### shotPlayContinuedOutsideZone Model with Logistic Regression
 
 
-```
-## 
-## Call:  glm(formula = shotPlayContinuedOutsideZone ~ shotAngleAdjusted + 
-##     arenaAdjustedShotDistance, family = binomial("logit"), data = recent_season)
-## 
-## Coefficients:
-##               (Intercept)          shotAngleAdjusted  
-##                 -0.913879                   0.002803  
-## arenaAdjustedShotDistance  
-##                  0.008717  
-## 
-## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
-## Null Deviance:	    1517000 
-## Residual Deviance: 1510000 	AIC: 1510000
-```
 
 
 ---
@@ -121,7 +98,7 @@ class: center, middle, inverse, title-slide
 
 ### shotPlayContinuedOutsideZone Coefficient Trends Over Time
 
-&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-10-2.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 

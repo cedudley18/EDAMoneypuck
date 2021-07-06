@@ -55,11 +55,68 @@ dat_list = split(recent_season, recent_season$season)
 
 ---
 
+### How much does that increase matter
 
-## How much does that increase matter
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
+
+init_logit <- map(dat_list, ~glm(goal ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+                                 data = .x,
+                                 family = binomial("logit")) )
+
+distance<- rep(NA,11)
+angle<-rep(NA,11)
+
+for (i in 1:11){
+  distance[i] <- init_logit[[i]]$coefficients[3]
+  angle[i]<- init_logit[[i]]$coefficients[2]
+}
+
+coefficients<- data.frame(season= as.factor(2010:2020) ,distance_c= distance, angle_c = angle)
+
+ggplot(coefficients,aes(x=season,y=distance_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "xG Coefficient Trends Over Time: Distance",
+       x = "Season",
+       y = "Shot Distance Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20,face = "bold"))
+  
+ggplot(coefficients,aes(x=season,y=angle_c))+
+  geom_point()+
+  geom_line(aes(group=1))+
+  labs(title = "xG Coefficient Trends Over Time: Angle",
+       x = "Season",
+       y = "Shot Angle Coefficient")+
+  theme_bw()+
+  theme(axis.title.x = element_text(size=16),
+           axis.title.y = element_text(size=16),
+           plot.title = element_text(size = 20, face = "bold"))
+```
+
+
+---
+
+
+
+### How much does that increase matter
 
 ```{r}
+average<-data.frame(arenaAdjustedShotDistance=mean(recent_season$arenaAdjustedShotDistance),shotAngleAdjusted=mean(recent_season$shotAngleAdjusted))
+```
 
+Plug the mean distance and angle to 2010 xG model
+
+```{r}
+predict(init_logit[[1]],average,type = "response")[[1]]
+```
+
+Plug the mean distance and angle to 2018 xG model
+
+```{r}
+predict(init_logit[[9]],average,type = "response")[[1]]
 ```
 
 
@@ -72,9 +129,6 @@ SGF_logit<-glm(shotGoalieFroze ~                        shotAngleAdjusted+arenaA
                data = recent_season,
                family = binomial("logit")) 
 
-tab_model(SGF_logit,transform = NULL,
-          show.se = TRUE, show.stat = TRUE, show.ci = FALSE, show.aic = TRUE,
-          digits.p = 2, digits = 4, df.method = "wald")
 ```
 
 
@@ -83,7 +137,7 @@ tab_model(SGF_logit,transform = NULL,
 
 ### shotGoalieFroze Coefficient Trends Over Time
 
-```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5,vjust = 1}
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
 init_logit <- map(dat_list, ~glm(shotGoalieFroze ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
                                  data = .x,
@@ -132,10 +186,6 @@ SPCIZ_logit<-glm(shotPlayContinuedInZone ~                        shotAngleAdjus
                data = recent_season,
                family = binomial("logit")) 
 
-tab_model(SPCIZ_logit,transform = NULL,
-          show.se = TRUE, show.stat = TRUE, show.ci = FALSE, show.aic = TRUE,
-          digits.p = 2, digits = 4, df.method = "wald")
-
 ```
 
 
@@ -144,7 +194,7 @@ tab_model(SPCIZ_logit,transform = NULL,
 
 ### shotPlayContinuedInZone Coefficient Trends Over Time
 
-```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5,,vjust = -0.5}
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
 init_logit <- map(dat_list, ~glm(shotPlayContinuedInZone ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
                                  data = .x,
@@ -193,10 +243,6 @@ SPCOZ_logit<-glm(shotPlayContinuedOutsideZone ~                        shotAngle
                data = recent_season,
                family = binomial("logit")) 
 
-tab_model(SPCOZ_logit,transform = NULL,
-          show.se = TRUE, show.stat = TRUE, show.ci = FALSE, show.aic = TRUE,
-          digits.p = 2, digits = 4, df.method = "wald")
-
 ```
 
 
@@ -205,7 +251,7 @@ tab_model(SPCOZ_logit,transform = NULL,
 
 ### shotPlayContinuedOutsideZone Coefficient Trends Over Time
 
-```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5,vjust = 0.5}
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
 init_logit <- map(dat_list, ~glm(shotPlayContinuedOutsideZone ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
                                  data = .x,
