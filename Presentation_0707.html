@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Initial Tasks with Moneypuck Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Claire Dudley, Devin Basley" />
+    <meta name="author" content="Ruby Wu, Sara Armstrong" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Initial Tasks with Moneypuck Data
+### Claire Dudley, Devin Basley
+### Ruby Wu, Sara Armstrong
+### July 7th, 2021
+
+---
+
+
+
+
+
+
+
+
+
+## The problem
+
+---
+
+
+## How much does that increase matter
+
+
+
+
+---
+
+### shotGoalieFroze Model with Logistic Regression
+
+
+```
+## 
+## Call:  glm(formula = shotGoalieFroze ~ shotAngleAdjusted + arenaAdjustedShotDistance, 
+##     family = binomial("logit"), data = recent_season)
+## 
+## Coefficients:
+##               (Intercept)          shotAngleAdjusted  
+##                 -1.984525                   0.002337  
+## arenaAdjustedShotDistance  
+##                  0.008065  
+## 
+## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
+## Null Deviance:	    1030000 
+## Residual Deviance: 1026000 	AIC: 1026000
+```
+
+
+---
+
+
+### shotGoalieFroze Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-3-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### shotPlayContinuedInZone Model with Logistic Regression
+
+
+```
+## 
+## Call:  glm(formula = shotPlayContinuedInZone ~ shotAngleAdjusted + arenaAdjustedShotDistance, 
+##     family = binomial("logit"), data = recent_season)
+## 
+## Coefficients:
+##               (Intercept)          shotAngleAdjusted  
+##                -0.8307658                  0.0013269  
+## arenaAdjustedShotDistance  
+##                 0.0007848  
+## 
+## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
+## Null Deviance:	    1434000 
+## Residual Deviance: 1434000 	AIC: 1434000
+```
+
+
+---
+
+
+### shotPlayContinuedInZone Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-5-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### shotPlayContinuedOutsideZone Model with Logistic Regression
+
+
+```
+## 
+## Call:  glm(formula = shotPlayContinuedOutsideZone ~ shotAngleAdjusted + 
+##     arenaAdjustedShotDistance, family = binomial("logit"), data = recent_season)
+## 
+## Coefficients:
+##               (Intercept)          shotAngleAdjusted  
+##                 -0.913879                   0.002803  
+## arenaAdjustedShotDistance  
+##                  0.008717  
+## 
+## Degrees of Freedom: 1146535 Total (i.e. Null);  1146533 Residual
+## Null Deviance:	    1517000 
+## Residual Deviance: 1510000 	AIC: 1510000
+```
+
+
+---
+
+
+### shotPlayContinuedOutsideZone Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+## Heat map of Predicted values
+
+
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
