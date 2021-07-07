@@ -45,10 +45,37 @@ shots0719 <- read.csv("shots_data/shots_2007-2019.csv")
 shots1019 <- shots0719 %>% 
   filter(season>2009)
 
-recent_season <- rbind(select(shots1019,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound),select(shots2020,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound))
+recent_season <- rbind(select(shots1019,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted),select(shots2020,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted))
 
 dat_list = split(recent_season, recent_season$season)
+
+offense_shots <-
+  recent_season %>%
+  filter(xCordAdjusted %in% c(25:89),
+         yCordAdjusted %in% c(-42:42))
 ```
+```{r}
+xg_logit <- glm(goal ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+               data = offense_shots,
+               family = binomial("logit"))
+
+rebound_logit <- glm(shotGeneratedRebound ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
+               data = offense_shots,
+               family = binomial("logit"))
+
+goaliefroze_logit <- glm(shotGoalieFroze ~ arenaAdjustedShotDistance + shotAngleAdjusted,
+                         data = offense_shots,
+                         family = binomial("logit"))
+
+playinzone_logit <- glm(shotPlayContinuedInZone ~ arenaAdjustedShotDistance + shotAngleAdjusted,
+                        data = offense_shots,
+                        family = binomial("logit"))
+
+playoutzone_logit <- glm(shotPlayContinuedOutsideZone ~ arenaAdjustedShotDistance + shotAngleAdjusted,
+                         data = offense_shots,
+                         family = binomial("logit"))
+```
+
 
 
 ## The problem
@@ -295,6 +322,104 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
 
 
 ## Heat map of Predicted values
+
+---
+
+### Expected Goal 
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="70%"}
+source('rink.r')  
+g <- rink 
+g + 
+  stat_summary_hex(data = offense_shots,
+                 aes(x = yCordAdjusted,
+                     y = xCordAdjusted,
+                     # fill = after_stat(level)),
+                    z = xg_logit$fitted.values),
+                 binwidth = c(3,3),
+                 color = "black",
+                 fun = mean) +
+  scale_fill_gradient(low = "darkblue",
+                      high = "darkorange") +
+  theme_bw()
+```
+
+---
+
+### Rebound Model
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="70%"}
+g + 
+  stat_summary_hex(data = offense_shots,
+                 aes(x = yCordAdjusted,
+                     y = xCordAdjusted,
+                     # fill = after_stat(level)),
+                    z = rebound_logit$fitted.values),
+                 binwidth = c(3,3),
+                 color = "black",
+                 fun = mean) +
+  scale_fill_gradient(low = "darkblue",
+                      high = "darkorange") +
+  theme_bw()
+```
+
+---
+
+### Goalie Froze 
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="70%"}
+g + 
+  stat_summary_hex(data = offense_shots,
+                   aes(x = yCordAdjusted,
+                       y = xCordAdjusted,
+                       # fill = after_stat(level)),
+                       z = goaliefroze_logit$fitted.values),
+                   binwidth = c(3,3),
+                   color = "black",
+                   fun = mean) +
+  scale_fill_gradient(low = "darkblue",
+                      high = "darkorange") +
+  theme_bw()
+```
+
+---
+
+### Play Continued in Zone
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="70%"}
+g + 
+  stat_summary_hex(data = offense_shots,
+                   aes(x = yCordAdjusted,
+                       y = xCordAdjusted,
+                       # fill = after_stat(level)),
+                       z = playinzone_logit$fitted.values),
+                   binwidth = c(3,3),
+                   color = "black",
+                   fun = mean) +
+  scale_fill_gradient(low = "darkblue",
+                      high = "darkorange") +
+  theme_bw()
+
+```
+
+---
+
+### Play Continued Out of Zone
+
+```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="70%"}
+g + 
+  stat_summary_hex(data = offense_shots,
+                   aes(x = yCordAdjusted,
+                       y = xCordAdjusted,
+                       # fill = after_stat(level)),
+                       z = playoutzone_logit$fitted.values),
+                   binwidth = c(3,3),
+                   color = "black",
+                   fun = mean) +
+  scale_fill_gradient(low = "darkblue",
+                      high = "darkorange") +
+  theme_bw()
+```
 
 
 
