@@ -45,7 +45,7 @@ shots0719 <- read.csv("shots_data/shots_2007-2019.csv")
 shots1019 <- shots0719 %>% 
   filter(season>2009)
 
-recent_season <- rbind(select(shots1019,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted),select(shots2020,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted))
+recent_season <- rbind(select(shots1019,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted),select(shots2020,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted, shotAngle))
 
 dat_list = split(recent_season, recent_season$season)
 
