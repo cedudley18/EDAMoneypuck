@@ -156,8 +156,18 @@ SGF_logit<-glm(shotGoalieFroze ~                        shotAngleAdjusted+arenaA
                data = recent_season,
                family = binomial("logit")) 
 
-```
 
+
+```
+---
+```{r}
+init_logit_Froze_shotAngle <- glm(shotGoalieFroze ~ shotAngle+arenaAdjustedShotDistance,
+                    data = recent_season,
+                    family = binomial("logit"))
+
+
+
+```
 
 ---
 
