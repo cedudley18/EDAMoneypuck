@@ -716,5 +716,15 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
            axis.title.y = element_text(size=16),
            plot.title = element_text(size = 20,face = "bold"))
 ```
-
+---
+```{r echo=FALSE}
+nhl_rebounds_loyo_cv_preds %>%
+  mutate(test_pred = as.numeric(test_pred_probs >= 0.5)) %>%
+  group_by(test_season) %>%
+  summarize(mcr = mean(test_pred != test_actual)) %>%
+  ggplot(aes(x = test_season, y = mcr)) +
+  geom_bar(stat = "identity", width = .1) +
+  geom_point(size = 5) +
+  theme_bw() +
+  scale_x_continuous(breaks = unique(nhl_rebounds_loyo_cv_preds$test_season))
 
