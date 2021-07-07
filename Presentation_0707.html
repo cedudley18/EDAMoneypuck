@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Claire Dudley, Devin Basley" />
     <meta name="author" content="Ruby Wu, Sara Armstrong" />
+    <script src="Presentation_0707_files/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -14,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Initial Tasks with Moneypuck Data
 ### Claire Dudley, Devin Basley
 ### Ruby Wu, Sara Armstrong
-### July 1st, 2021
+### July 7th, 2021
 
 ---
 
@@ -24,156 +25,122 @@ class: center, middle, inverse, title-slide
 
 
 
-## Bootstrapping
- - Any test or metric that uses sampling with replacement
- - Assigns measures of accuracy to sample estimates
- - Allows estimation of sampling distribution of any statistic using random sampling
- 
+
+
+
+
+## The problem
+
+---
+
+### How much does that increase matter
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-2-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
 ---
 
 
 
+### How much does that increase matter
 
 
 
+Plug the mean distance and angle to 2010 xG model
 
 
+```
+## [1] 0.04788297
+```
 
-class: left, top
-## NHL Shots Data
-* &lt;p&gt; Each row represents a shot puck in the NHL
-* &lt;p&gt; Calibration plots only include shots and the xG model from 2020-21 season
-* &lt;p&gt; Made basic logistic regression models with rebound and goals as response variables, distance and angle as explanatory
-* &lt;p&gt; Looked at seasons from 2009-2019 to see if the coefficients for these logistic regression models change over time
+Plug the mean distance and angle to 2018 xG model
+
+
+```
+## [1] 0.05340963
+```
+
 
 ---
 
-## Calibration of Moneypuck xG Model
+### shotGoalieFroze Model with Logistic Regression
+
+
+
+
+---
+
+
+### shotGoalieFroze Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-7-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### shotPlayContinuedInZone Model with Logistic Regression
+
+
+
+
+---
+
+
+### shotPlayContinuedInZone Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-9-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### shotPlayContinuedOutsideZone Model with Logistic Regression
+
+
+
+
+---
+
+
+### shotPlayContinuedOutsideZone Coefficient Trends Over Time
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-11-2.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+## Heat map of Predicted values
 
 --
 
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-4-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+### Expected Goal 
+
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-class: center, middle
+### Rebound Model
 
-# Calibration on subsets
-
----
-
-## Team
-
-### Home vs. Away
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-5-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-5-2.png" width="50%" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-layout: true
+### Goalie Froze 
 
-## Situation 
-
----
-
-### Even Strength
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-### Powerplay and Penalty Kill
+### Play Continued in Zone
 
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-7-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-7-2.png" width="50%" /&gt;
-
----
-
-layout: true
-
-##Shot Type
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-15-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-### Wristshot and Slapshot
+### Play Continued Out of Zone
 
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-8-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-8-2.png" width="50%" /&gt;
+&lt;img src="Presentation_0707_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
 
 ---
-
-### Backhand and Snapshot
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-9-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-9-2.png" width="50%" /&gt;
-
----
-
-
-### Tip and Wraparound
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-10-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-10-2.png" width="50%" /&gt;
-
----
-
-### Deflection
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-11-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-layout: false
-
-## Position
-
-### Forwards vs Defense
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-12-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-12-2.png" width="50%" /&gt;
-
----
-
-## Handedness
-
-### Left vs. Righthand
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-13-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-13-2.png" width="50%" /&gt;
-
----
-
-## Are Any Rinks Poorly Calibrated? 
---
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-14-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-14-2.png" width="50%" /&gt;
----
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-15-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-15-2.png" width="50%" /&gt;
-
----
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-16-1.png" width="50%" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-16-2.png" width="50%" /&gt;
-
----
-
-### Basic xG Model with Logistic Regression  
-###### &amp;nbsp; 
-
-![](moneypuckpres_files/goal.png)
-
----
-
-### Rebound Probability Model with Logistic Regression
-
-![](moneypuckpres_files/rebound.png)
-
----
-
-### xG Coefficient Trends Over Time
-
-
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-18-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-18-2.png" width="80%" style="display: block; margin: auto;" /&gt;
-
----
-
-### Rebound Coefficient Trends Over Time
-
-
-&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;&lt;img src="moneypuckpres_files/figure-html/unnamed-chunk-19-2.png" width="80%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
