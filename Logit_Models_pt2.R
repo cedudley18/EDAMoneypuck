@@ -68,3 +68,7 @@ mean(ifelse(init_logit_Froze$fitted.values >= 0.5, 1, 0) != shots$shotGoalieFroz
 mean(as.numeric(init_logit_Froze$fitted.values >= 0.5) != shots$shotGoalieFroze)
 
 mean((shots$shotGoalieFroze - fitted(init_logit_Froze))^2)
+
+
+
+
