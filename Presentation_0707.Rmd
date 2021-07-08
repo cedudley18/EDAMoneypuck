@@ -45,7 +45,11 @@ shots0719 <- read.csv("shots_data/shots_2007-2019.csv")
 shots1019 <- shots0719 %>% 
   filter(season>2009)
 
+<<<<<<< HEAD
+recent_season <- rbind(select(shots1019,shotAngle,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted),select(shots2020,shotAngle,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted))
+=======
 recent_season <- rbind(select(shots1019,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted),select(shots2020,shotGoalieFroze,shotPlayContinuedInZone,shotPlayContinuedOutsideZone,season,shotAngleAdjusted,arenaAdjustedShotDistance,goal,shotGeneratedRebound, xCordAdjusted, yCordAdjusted, shotAngle))
+>>>>>>> e550a16a3bda39c2f6426bc91df3c226e298e72a
 
 dat_list = split(recent_season, recent_season$season)
 
@@ -79,6 +83,10 @@ playoutzone_logit <- glm(shotPlayContinuedOutsideZone ~ arenaAdjustedShotDistanc
 
 
 ## The problem
+
+
+
+
 
 ---
 
@@ -149,7 +157,7 @@ predict(init_logit[[9]],average,type = "response")[[1]]
 
 ---
 
-### shotGoalieFroze Model with Logistic Regression
+### Goalie Froze Model with Logistic Regression
 
 ```{r}
 SGF_logit<-glm(shotGoalieFroze ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
@@ -159,7 +167,7 @@ SGF_logit<-glm(shotGoalieFroze ~                        shotAngleAdjusted+arenaA
 
 
 ```
----
+
 ```{r}
 init_logit_Froze_shotAngle <- glm(shotGoalieFroze ~ shotAngle+arenaAdjustedShotDistance,
                     data = recent_season,
@@ -169,10 +177,11 @@ init_logit_Froze_shotAngle <- glm(shotGoalieFroze ~ shotAngle+arenaAdjustedShotD
 
 ```
 
+![](Presentation_0707_files/shotGoalieFroze.png)
 ---
 
 
-### shotGoalieFroze Coefficient Trends Over Time
+### Goalie Froze Coefficient Trends Over Time
 
 ```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
@@ -216,7 +225,7 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
 
 ---
 
-### shotPlayContinuedInZone Model with Logistic Regression
+### Play Continued in Zone Model with Logistic Regression
 
 ```{r}
 SPCIZ_logit<-glm(shotPlayContinuedInZone ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
@@ -225,11 +234,11 @@ SPCIZ_logit<-glm(shotPlayContinuedInZone ~                        shotAngleAdjus
 
 ```
 
-
+![](Presentation_0707_files/shotPlayContinuedInZone.png)
 ---
 
 
-### shotPlayContinuedInZone Coefficient Trends Over Time
+### Play Continued in Zone Coefficient Trends Over Time
 
 ```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
@@ -273,7 +282,7 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
 
 ---
 
-### shotPlayContinuedOutsideZone Model with Logistic Regression
+### Play Continued Out of Zone Model with Logistic Regression
 
 ```{r}
 SPCOZ_logit<-glm(shotPlayContinuedOutsideZone ~                        shotAngleAdjusted+arenaAdjustedShotDistance,
@@ -282,11 +291,12 @@ SPCOZ_logit<-glm(shotPlayContinuedOutsideZone ~                        shotAngle
 
 ```
 
+![](Presentation_0707_files/shotPlayContinuedOutsideZone.png)
 
 ---
 
 
-### shotPlayContinuedOutsideZone Coefficient Trends Over Time
+### Play Continued Out of Zone Coefficient Trends Over Time
 
 ```{r echo=FALSE,fig.align="center", fig.show="hold", out.width="80%",fig.width = 9, fig.height = 3.5}
 
@@ -330,6 +340,7 @@ ggplot(coefficients,aes(x=season,y=angle_c))+
 
 ---
 
+class: center, middle
 
 ## Heat map of Predicted values
 
@@ -430,7 +441,5 @@ g +
                       high = "darkorange") +
   theme_bw()
 ```
-
-
-
 ---
+
