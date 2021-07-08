@@ -1,11 +1,14 @@
-shots_2013_2019 %>%
-  mutate(shotDistance = as.numeric(shotDistance),
-         shotRebound = as.numeric(shotRebound),
-         shotAngleAdjusted = as.numeric(shotDistance)) 
+shots <- read.csv("shots_2007-2019.csv")
 
 
-init_logit_rebounds <- glm(shotRebound ~ shotDistance + shotAngleAdjusted,
-                           data = shots_2013_2019,
+shots %>%
+  mutate(arenaAdjustedShotDistance = as.numeric(shotDistance),
+         shotGeneratedRebound = as.numeric(shotGeneratedRebound),
+         shotAngleAdjusted = as.numeric(shotAngleAdjusted)) 
+
+
+init_logit_rebounds <- glm(shotGeneratedRebound ~ arenaAdjustedShotDistance + shotAngleAdjusted,
+                           data = shots,
                            family = "binomial")
 
 pred_rebound_outcome <-
@@ -13,7 +16,7 @@ pred_rebound_outcome <-
 head(pred_rebound_outcome)
 table(pred_rebound_outcome)
 
-shots_2013_2019 %>%
+shots %>%
   ggplot(aes(init_logit_rebounds$fitted.values)) +
   geom_histogram() +
   theme_bw()
@@ -24,20 +27,20 @@ nhl_rebounds_loyo_cv_preds <-
           function(test_season) {
             
             # Separate out the test and training data:
-            test_data <- shots_2013_2019 %>%
+            test_data <- shots %>%
               filter(season == test_season)
             
-            train_data <- shots_2013_2019 %>%
+            train_data <- shots %>%
               filter(season != test_season)
             
-            rebound_model <- glm(shotRebound ~ shotDistance + shotAngleAdjusted,
+            rebound_model <- glm(shotGeneratedRebound ~ shotDistance + shotAngleAdjusted,
                                  data = train_data,
                                  family = "binomial")
             
             tibble(test_pred_probs = predict(rebound_model, 
                                              newdata = test_data,
                                              type = "response"),
-                   test_actual = test_data$shotRebound,
+                   test_actual = test_data$shotGeneratedRebound,
                    test_season = test_season) %>%
               return()
             
